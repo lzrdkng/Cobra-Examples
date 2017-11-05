@@ -1,0 +1,130 @@
+#include "MazeApplication.hpp"
+
+MazeApplication::MazeApplication(SDL::InitFlags flags)
+: maze(nullptr)
+{
+    SDL::init(flags);
+}
+
+MazeApplication::~MazeApplication()
+{
+    SDL::quit();
+
+    delete maze;
+    maze = nullptr;
+}
+
+
+void MazeApplication::generateMaze()
+{
+    delete maze;
+
+    nx = (width - 2*paddingX)/8;
+    ny = (height - 2*paddingY)/8;
+
+    maze = new Maze {nx, ny};
+}
+
+void MazeApplication::drawMaze(SDL::Renderer& render)
+{
+
+
+    std::vector<SDL::Pair<SDL::Point>> vector_walls;
+
+    const std::pair<Walls, Walls> walls = maze->getMaze();
+
+    const Walls& wallsH = walls.first;
+    const Walls& wallsV = walls.second;
+
+    int x {0}, y {0};
+
+    float stepX = (width  - 2*paddingX)/maze->getNx();
+    float stepY = (height - 2*paddingY)/maze->getNy();
+
+    for (Walls::iterator it=wallsH.begin(); it!=wallsH.end(); ++it)
+    {
+        x = stepX * ((*it)%nx) + paddingX;
+        y = stepY * ((*it)/nx) + paddingY;
+
+        SDL::Pair<SDL::Point> points(SDL::Point {x, y}, SDL::Point {x+stepX, y});
+
+        vector_walls.push_back(points);
+    }
+
+    for (Walls::iterator it=wallsV.begin(); it!=wallsV.end(); ++it)
+    {
+        x = stepX * ((*it)%(nx+1)) + paddingX;
+        y = stepY * ((*it)/(nx+1)) + paddingY;
+
+        SDL::Pair<SDL::Point> points(SDL::Point {x, y}, SDL::Point {x, y+stepY});
+
+        vector_walls.push_back(points);
+    }
+
+    render.setDrawColor(SDL::Color {255, 255, 255});
+    render.clear();
+
+    render.setDrawColor(SDL::Color {0, 0, 0});
+    render.drawLines(vector_walls);
+
+    render.present();
+}
+
+void MazeApplication::windowResized(const SDL::Window& window)
+{
+    const float P = 0.1F; // Pourcentage of padding
+
+    SDL::Pair<int> size = window.getSize();
+
+    width  = size.getFirst();
+    height = size.getSecond();
+
+    paddingX = P * width;
+    paddingY = P * height;
+}
+
+
+void MazeApplication::run(SDL::Window& window, SDL::Renderer& render)
+{
+    bool quit = false;
+
+    SDL_Event event;
+
+    windowResized(window);
+    generateMaze();
+    drawMaze(render);
+
+
+    while (SDL_PollEvent(&event) != 0 || !quit)
+    {
+        if (event.type == SDL_QUIT)
+        {
+            quit = true;
+            SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+            continue;
+        }
+        else if (event.type == SDL_KEYDOWN)
+        {
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_SPACE:
+                generateMaze();
+                drawMaze(render);
+                break;
+            }
+        }
+        else if (event.type == SDL_WINDOWEVENT)
+        {
+            switch (event.window.event)
+            {
+            case SDL_WINDOWEVENT_RESIZED:
+            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                windowResized(window);
+                drawMaze(render);
+                break;
+            }
+        }
+    }
+
+}
+
