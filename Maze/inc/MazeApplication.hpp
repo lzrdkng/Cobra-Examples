@@ -27,7 +27,7 @@ protected:
 
 private:
 
-    Maze* maze;
+    Maze maze;
 
     uint width {0};
     uint height {0};

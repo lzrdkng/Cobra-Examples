@@ -1,7 +1,6 @@
 #include "MazeApplication.hpp"
 
-MazeApplication::MazeApplication(SDL::InitFlags flags)
-: maze(nullptr)
+MazeApplication::MazeApplication(SDL::InitFlags flags) : maze()
 {
     SDL::init(flags);
 }
@@ -9,37 +8,30 @@ MazeApplication::MazeApplication(SDL::InitFlags flags)
 MazeApplication::~MazeApplication()
 {
     SDL::quit();
-
-    delete maze;
-    maze = nullptr;
 }
 
 
 void MazeApplication::generateMaze()
 {
-    delete maze;
-
     nx = (width - 2*paddingX)/8;
     ny = (height - 2*paddingY)/8;
 
-    maze = new Maze {nx, ny};
+    maze.setValues(nx, ny).generateMaze();
 }
 
 void MazeApplication::drawMaze(SDL::Renderer& render)
 {
-
-
     std::vector<SDL::Pair<SDL::Point>> vector_walls;
 
-    const std::pair<Walls, Walls> walls = maze->getMaze();
+    const std::pair<Walls, Walls> walls = maze.getMaze();
 
     const Walls& wallsH = walls.first;
     const Walls& wallsV = walls.second;
 
     int x {0}, y {0};
 
-    float stepX = (width  - 2*paddingX)/maze->getNx();
-    float stepY = (height - 2*paddingY)/maze->getNy();
+    float stepX = (width  - 2*paddingX)/maze.getNx();
+    float stepY = (height - 2*paddingY)/maze.getNy();
 
     for (Walls::iterator it=wallsH.begin(); it!=wallsH.end(); ++it)
     {
@@ -86,8 +78,6 @@ void MazeApplication::windowResized(const SDL::Window& window)
 
 void MazeApplication::run(SDL::Window& window, SDL::Renderer& render)
 {
-    bool quit = false;
-
     SDL_Event event;
 
     windowResized(window);
@@ -95,13 +85,13 @@ void MazeApplication::run(SDL::Window& window, SDL::Renderer& render)
     drawMaze(render);
 
 
-    while (SDL_PollEvent(&event) != 0 || !quit)
+    do
     {
+        SDL_PollEvent(&event);
+
         if (event.type == SDL_QUIT)
         {
-            quit = true;
-            SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
-            continue;
+            break;
         }
         else if (event.type == SDL_KEYDOWN)
         {
@@ -110,8 +100,10 @@ void MazeApplication::run(SDL::Window& window, SDL::Renderer& render)
             case SDLK_SPACE:
                 generateMaze();
                 drawMaze(render);
-                break;
+                continue;
             }
+
+            SDL_FlushEvent(SDL_KEYDOWN);
         }
         else if (event.type == SDL_WINDOWEVENT)
         {
@@ -121,10 +113,11 @@ void MazeApplication::run(SDL::Window& window, SDL::Renderer& render)
             case SDL_WINDOWEVENT_SIZE_CHANGED:
                 windowResized(window);
                 drawMaze(render);
-                break;
+                continue;
             }
         }
-    }
+
+    } while(true);
 
 }
 

@@ -1,9 +1,11 @@
 #include "Maze.hpp"
 
+Maze::Maze() : m_walls(Walls(), Walls()), m_nx(0), m_ny(0) {}
+
 Maze::Maze(uint nx, uint ny)
-    : m_walls{iota(1, nx * (ny + 1) - 1), iota(0, ny * (nx + 1))}, m_nx(nx), m_ny(ny)
+: m_walls{iota(1, nx * (ny + 1) - 1), iota(0, ny * (nx + 1))}, m_nx(nx), m_ny(ny)
 {
-    this->generateMaze();
+  this->generateMaze();
 }
 
 Maze::Maze(const Maze& copy)
@@ -33,6 +35,9 @@ uint Maze::getNy() const
     return m_ny;
 }
 
+Maze& Maze::setNx(uint nx) { m_nx = nx; return *this; }
+Maze& Maze::setNy(uint ny) { m_ny = ny; return *this; }
+Maze& Maze::setValues(uint nx, uint ny) { m_nx = nx; m_ny = ny; return *this; }
 
 
 Walls Maze::determineNeighbours(uint n) const
@@ -65,8 +70,10 @@ Walls Maze::determineNeighbours(uint n) const
     return neighbours;
 }
 
-void Maze::generateMaze()
+Maze& Maze::generateMaze()
 {
+    m_walls = {iota(1, m_nx * (m_ny + 1) -1), iota(0, m_ny * (m_nx + 1))};
+
     srand(time(NULL));
 
     uint seed = rand() % (m_nx * m_ny);
@@ -116,6 +123,8 @@ void Maze::generateMaze()
         front.erase(newCave);
         cave.insert(*newCave);
     }
+
+    return *this;
 }
 
 Walls Maze::iota(uint a, uint b) const

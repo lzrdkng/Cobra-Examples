@@ -19,6 +19,8 @@ class Maze
 
 public:
 
+    Maze();
+
     Maze(uint nx, uint ny);
 
     Maze(const Maze& copy);
@@ -34,6 +36,12 @@ public:
     uint getNx() const;
 
     uint getNy() const;
+
+    Maze& setNx(uint nx);
+    Maze& setNy(uint ny);
+    Maze& setValues(uint nx, uint ny);
+
+    Maze& generateMaze();
 /*
     virtual std::vector<uint> solve(uint n);
 
@@ -49,8 +57,6 @@ protected:
 
 
     Walls determineNeighbours(uint n) const;
-
-    virtual void generateMaze();
 
     Walls iota(uint a, uint b) const;
 
