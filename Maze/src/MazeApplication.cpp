@@ -68,8 +68,8 @@ void MazeApplication::windowResized(const SDL::Window& window)
 
     SDL::Pair<int> size = window.getSize();
 
-    width  = size.getFirst();
-    height = size.getSecond();
+    width  = size.first;
+    height = size.second;
 
     paddingX = P * width;
     paddingY = P * height;

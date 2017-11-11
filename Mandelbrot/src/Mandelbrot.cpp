@@ -2,10 +2,11 @@
 #include <cmath>
 // cobra imports
 #include <Cobra/WindowSurface.hpp>
-#include <Cobra/Pair.hpp>
+
 // app imports
 #include "Mandelbrot.hpp"
 #include "constants.hpp"
+#include <Cobra/SDL.hpp>
 
 
 const long double LOG2 = std::log(2);
@@ -21,8 +22,8 @@ Mandelbrot::Mandelbrot(SDL::Window& window, complex origin, double zoom, unsigne
 {
     SDL::Pair<int> windowSize = window.getSize();
 
-    m_width  = windowSize.getFirst();
-    m_height = windowSize.getSecond();
+    m_width  = windowSize.first;
+    m_height = windowSize.second;
 
     SDL::WindowSurface windowSurface(window);
 
@@ -136,7 +137,16 @@ Mandelbrot& Mandelbrot::renderImage()
     { 
         for (unsigned y=0; y<m_height; ++y)
         {
-            this->renderPixel(x, y, iterate(screenToCartesian(x, y)));
+            this->renderPixel(x, y, iterate(
+                                  SDL::screenToCartesian
+                                  (
+                                      SDL::Coord {x, y},
+                                      m_width,
+                                      m_height,
+                                      getEpsilon()
+                                  )
+                                  )
+                              );
         }
     }
 
