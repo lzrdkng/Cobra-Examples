@@ -20,7 +20,18 @@ Koch::Koch(int n, int step) : m_vertex()
 
 Koch::~Koch() { }
 
-std::vector<SDL::Pair<SDL::Point>> Koch::getEdges() const
+
+const SDL::Coord& Koch::getOffset() const
+{
+  return m_offset;
+}
+
+double Koch::getZoom() const
+{
+  return m_zoom;
+}
+
+std::vector<SDL::Pair<SDL::Point>> Koch::getEdges(int width, int height) const
 {
   std::vector<SDL::Pair<SDL::Point>> edges;
 
@@ -37,7 +48,16 @@ std::vector<SDL::Pair<SDL::Point>> Koch::getEdges() const
 
     if (n_it != m_vertex.end())
     {
-      edges.push_back({SDL::cartesianToScreen(*it, 500, 500),SDL::cartesianToScreen(*n_it, 500, 500)});
+      edges.push_back({
+	  SDL::cartesianToScreen(*it,
+				 width, height,
+				 m_offset,
+				 m_zoom),
+	    SDL::cartesianToScreen(*n_it,
+				   width, height,
+				   m_offset,
+				   m_zoom)
+			  });
     }
 
     it = n_it;
@@ -87,5 +107,24 @@ Koch& Koch::increment()
 Koch& Koch::decrement()
 {
   if (m_current != 0) --m_current;
+  return *this;
+}
+
+Koch& Koch::zoomIn()
+{
+  m_zoom += 0.5;
+  return *this;
+}
+
+Koch& Koch::zoomOut()
+{
+  m_zoom -= 0.5;
+  if (m_zoom < 1) m_zoom = 1;
+  return *this;
+}
+
+Koch& Koch::move(int x, int y)
+{
+  m_offset += SDL::Coord {x, y};
   return *this;
 }

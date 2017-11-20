@@ -145,10 +145,8 @@ Mandelbrot& Mandelbrot::renderImage()
 					   m_width,
 					   m_height,
 					   getEpsilon()
-					   )
-					  )
-			    );
-        }
+				       	   )));
+	}
     }
 
   m_renderer.present();

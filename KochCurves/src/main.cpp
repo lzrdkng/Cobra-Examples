@@ -1,9 +1,12 @@
-#include "Koch.hpp"
+#include <iostream>
+
+#include <time.h>
+#include <stdlib.h>
 
 #include <Cobra/Window.hpp>
 #include <Cobra/Renderer.hpp>
-#include <time.h>
-#include <stdlib.h>
+
+#include "Koch.hpp"
 
 
 void draw(SDL::Renderer& render, const std::vector<SDL::Pair<SDL::Point>>& edges);
@@ -20,16 +23,19 @@ int main(int argc, char** argv)
 
   SDL::init(SDL::InitVideo);
 
-  SDL::Window window("Koch", 500, 500);
+  SDL::Window window("Koch");
+  window.setResizable(true);
 
   SDL::Renderer render(window, SDL::RendererAccelerated);
+
+  SDL::Pair<int> size = window.getSize();
 
   render.setDrawColor(SDL::Color {0, 0, 0});
   render.clear();
 
   render.setDrawColor(SDL::Color {0xFF, 0xFF, 0xFF});
 
-  render.drawLines(koch.getEdges());
+  render.drawLines(koch.getEdges(size.first, size.second));
 
   render.present();
 
@@ -47,21 +53,63 @@ int main(int argc, char** argv)
     }
     else if(event.type == SDL_KEYDOWN)
     {
+
+      std::cout << "Zoom: " << koch.getZoom() << "\n"
+		<< "Offset: " << koch.getOffset() << std::endl;
+      
       switch (event.key.keysym.sym)
       {
-      case SDLK_SPACE:
+      case SDLK_PERIOD:
 	koch.increment();
-	draw(render, koch.getEdges());
+	draw(render, koch.getEdges(size.first, size.second));
 	break;
-      case SDLK_LSHIFT:
+      case SDLK_COMMA:
 	koch.decrement();
-	draw(render, koch.getEdges());
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      case SDLK_z:
+	koch.zoomIn();
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      case SDLK_x:
+	koch.zoomOut();
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      case SDLK_RIGHT:
+	koch.move(1, 0);
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      case SDLK_LEFT:
+	koch.move(-1, 0);
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      case SDLK_UP:
+	koch.move(0, -1);
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      case SDLK_DOWN:
+	koch.move(0, 1);
+	draw(render, koch.getEdges(size.first, size.second));
+	break;
+      default:
 	break;
       }
 
-      SDL_FlushEvent(SDL_KEYDOWN);
+      continue;
     }
+    else if (event.type == SDL_WINDOWEVENT)
+      {
+	switch (event.window.event)
+	  {
+	  case SDL_WINDOWEVENT_SIZE_CHANGED:
+	  case SDL_WINDOWEVENT_RESIZED:
+	    size = window.getSize();
+	    draw(render, koch.getEdges(size.first, size.second));
+	    break;
+	  }
 
+      }
+ 
   } while(true);
 
   SDL::quit();
