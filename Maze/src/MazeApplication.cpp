@@ -1,123 +1,116 @@
+#include <iostream>
 #include "MazeApplication.hpp"
 
 MazeApplication::MazeApplication(SDL::InitFlags flags) : maze()
 {
-    SDL::init(flags);
+  SDL::init(flags);
 }
 
 MazeApplication::~MazeApplication()
 {
-    SDL::quit();
+  SDL::quit();
 }
 
 
 void MazeApplication::generateMaze()
 {
-    nx = (width - 2*paddingX)/8;
-    ny = (height - 2*paddingY)/8;
+  nx = (width - 2*paddingX)/8;
+  ny = (height - 2*paddingY)/8;
 
-    maze.setValues(nx, ny).generateMaze();
+  maze.setValues(nx, ny).generateMaze();
 }
 
 void MazeApplication::drawMaze(SDL::Renderer& render)
 {
-    std::vector<SDL::Pair<SDL::Point>> vector_walls;
+  render.setDrawColor({255, 255, 255});
+  render.clear();
 
-    const std::pair<Walls, Walls> walls = maze.getMaze();
+  render.setDrawColor({0, 0, 0});
+  
+  const std::pair<Walls, Walls> walls = maze.getMaze();
 
-    const Walls& wallsH = walls.first;
-    const Walls& wallsV = walls.second;
+  const Walls& wallsH = walls.first;
+  const Walls& wallsV = walls.second;
 
-    int x {0}, y {0};
+  int x {0}, y {0};
 
-    float stepX = (width  - 2*paddingX)/maze.getNx();
-    float stepY = (height - 2*paddingY)/maze.getNy();
+  int stepX = std::round((width  - 2*paddingX)/maze.getNx());
+  int stepY = std::round((height - 2*paddingY)/maze.getNy());
 
-    for (Walls::iterator it=wallsH.begin(); it!=wallsH.end(); ++it)
-    {
-        x = stepX * ((*it)%nx) + paddingX;
-        y = stepY * ((*it)/nx) + paddingY;
+  for (auto  it=wallsH.begin(); it!=wallsH.end(); ++it)
+  {
+    x = stepX * ((*it)%nx) + paddingX;
+    y = stepY * ((*it)/nx) + paddingY;
 
-        SDL::Pair<SDL::Point> points(SDL::Point {x, y}, SDL::Point {x+stepX, y});
+    render.drawLine(x, y, x + stepX, y);
+  }
 
-        vector_walls.push_back(points);
-    }
+  for (auto  it=wallsV.begin(); it!=wallsV.end(); ++it)
+  {
+    x = stepX * ((*it)%(nx+1)) + paddingX;
+    y = stepY * ((*it)/(nx+1)) + paddingY;
 
-    for (Walls::iterator it=wallsV.begin(); it!=wallsV.end(); ++it)
-    {
-        x = stepX * ((*it)%(nx+1)) + paddingX;
-        y = stepY * ((*it)/(nx+1)) + paddingY;
+    render.drawLine(x, y, x, y + stepY);
+  }
 
-        SDL::Pair<SDL::Point> points(SDL::Point {x, y}, SDL::Point {x, y+stepY});
-
-        vector_walls.push_back(points);
-    }
-
-    render.setDrawColor(SDL::Color {255, 255, 255});
-    render.clear();
-
-    render.setDrawColor(SDL::Color {0, 0, 0});
-    render.drawLines(vector_walls);
-
-    render.present();
+  render.present();
 }
 
 void MazeApplication::windowResized(const SDL::Window& window)
 {
-    const float P = 0.1F; // Pourcentage of padding
+  const float P = 0.1F; // Pourcentage of padding
 
-    SDL::Pair<int> size = window.getSize();
+  auto size = window.getSize();
 
-    width  = size.first;
-    height = size.second;
+  width  = size.first;
+  height = size.second;
 
-    paddingX = P * width;
-    paddingY = P * height;
+  paddingX = P * width;
+  paddingY = P * height;
 }
 
 
 void MazeApplication::run(SDL::Window& window, SDL::Renderer& render)
 {
-    SDL_Event event;
+  SDL_Event event;
 
-    windowResized(window);
-    generateMaze();
-    drawMaze(render);
+  windowResized(window);
+  generateMaze();
+  drawMaze(render);
+  
+  do
+  {
+    SDL_PollEvent(&event);
 
-
-    do
+    if (event.type == SDL_QUIT) break;
+    
+    if (event.type == SDL_KEYDOWN)
     {
-        SDL_PollEvent(&event);
-
-        if (event.type == SDL_QUIT)
-        {
-            break;
-        }
-        else if (event.type == SDL_KEYDOWN)
-        {
-            switch (event.key.keysym.sym)
-            {
-            case SDLK_SPACE:
-                generateMaze();
-                drawMaze(render);
-                continue;
-            }
-
-            SDL_FlushEvent(SDL_KEYDOWN);
-        }
-        else if (event.type == SDL_WINDOWEVENT)
-        {
-            switch (event.window.event)
-            {
-            case SDL_WINDOWEVENT_RESIZED:
-            case SDL_WINDOWEVENT_SIZE_CHANGED:
-                windowResized(window);
-                drawMaze(render);
-                continue;
-            }
-        }
-
+      switch (event.key.keysym.sym)
+      {
+      case SDLK_SPACE:
+	generateMaze();
+	drawMaze(render);
+	break;
+      default:
+	break;
+      }
+    }
+    
+    if (event.type == SDL_WINDOWEVENT)
+    {
+      switch (event.window.event)
+      {
+      case SDL_WINDOWEVENT_RESIZED:
+      case SDL_WINDOWEVENT_SIZE_CHANGED:
+	windowResized(window);
+	drawMaze(render);
+	break;
+      default:
+	break;
+      }
+    }
+   
     } while(true);
-
 }
 

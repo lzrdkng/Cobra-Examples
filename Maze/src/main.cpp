@@ -8,15 +8,15 @@ using namespace std;
 int main()
 {
 
-    MazeApplication app(SDL::InitVideo);
+  MazeApplication app(SDL::InitVideo);
 
-    SDL::Window window("Maze", 640, 480,
-                       SDL::WindowResizable|SDL::WindowShown);
+  SDL::Window window("Maze", 640, 480,
+		     SDL::WindowResizable|SDL::WindowShown);
 
-    SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDL::Renderer render(window, SDL::RendererAccelerated);
 
 
-    app.run(window, render);
+  app.run(window, render);
 }
 
 

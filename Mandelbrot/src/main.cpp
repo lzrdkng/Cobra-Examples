@@ -16,64 +16,64 @@ const complex origin(0, 0);
 
 int main()
 {
-    SDL::init(SDL::InitVideo);
+  SDL::init(SDL::InitVideo);
 
-    SDL::Window root("Mandelbrot");
+  SDL::Window root("Mandelbrot");
 
-    Mandelbrot mandelbrot(root, origin, 2, 100);
+  Mandelbrot mandelbrot(root, origin, 2, 100);
 
-    mandelbrot.renderImage();
+  mandelbrot.renderImage();
 
-    SDL_Event event;
+  SDL_Event event;
 
-    std::cout << std::setprecision(17);
+  std::cout << std::setprecision(17);
 
-    do
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
         }
-        else if (event.type == SDL_KEYDOWN)
+      else if (event.type == SDL_KEYDOWN)
         {
-            switch (event.key.keysym.sym)
+	  switch (event.key.keysym.sym)
             {
             case SDLK_DOWN:
-                break;
+	      break;
             case SDLK_UP:
-                break;
+	      break;
             case SDLK_LEFT:
-                break;
+	      break;
             case SDLK_RIGHT:
-                break;
+	      break;
             case SDLK_SPACE:
-                mandelbrot.zoomIn(2);
-                break;
+	      mandelbrot.zoomIn(2);
+	      break;
             case SDLK_LSHIFT:
-                mandelbrot.zoomIn(0.5);
-                break;
+	      mandelbrot.zoomIn(0.5);
+	      break;
             default:
-                break;
+	      break;
             }
 
-            std::cout << "Center: "
-                      << mandelbrot.getCenter()
-                      << "\nZoom: "
-                      << mandelbrot.getZoom()
-                      << "\nEpsilon: "
-                      << mandelbrot.getEpsilon()
-                      << "\n----------------------"
-                      << std::endl;
+	  std::cout << "Center: "
+		    << mandelbrot.getCenter()
+		    << "\nZoom: "
+		    << mandelbrot.getZoom()
+		    << "\nEpsilon: "
+		    << mandelbrot.getEpsilon()
+		    << "\n----------------------"
+		    << std::endl;
 
-            mandelbrot.renderImage();
+	  mandelbrot.renderImage();
 
-            SDL_FlushEvent(SDL_KEYDOWN);
+	  SDL_FlushEvent(SDL_KEYDOWN);
         }
     } while(true);
 
-    SDL::quit();
+  SDL::quit();
 
-    return 0;
+  return 0;
 }

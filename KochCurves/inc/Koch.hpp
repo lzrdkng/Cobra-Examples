@@ -13,16 +13,22 @@ class Koch
 {
 public:
 
-    Koch(int n, int step);
+  Koch(int n, int step);
 
-    ~Koch();
+  ~Koch();
 
-    std::vector<SDL::Pair<SDL::Point>> getEdges() const;
+  std::vector<SDL::Pair<SDL::Point>> getEdges() const;
 
-    Koch& iterate();
+  Koch& increment();
+
+  Koch& decrement();
 
 private:
-    std::forward_list<std::complex<double>> m_vertex;
+  
+  std::forward_list<std::complex<double>> m_vertex;
+
+  uint m_max {0};
+  uint m_current {0};
 
 };
 
