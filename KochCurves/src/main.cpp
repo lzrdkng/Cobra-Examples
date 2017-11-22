@@ -9,7 +9,7 @@
 #include "Koch.hpp"
 
 
-void draw(SDL::Renderer& render, const std::vector<SDL::Pair<SDL::Point>>& edges);
+void draw(SDL::Renderer& render, const std::vector<SDL::Point>& edges);
 
 
 int main(int argc, char** argv)
@@ -118,16 +118,13 @@ int main(int argc, char** argv)
 }
 
 
-void draw(SDL::Renderer& render, const std::vector<SDL::Pair<SDL::Point>>& edges)
+void draw(SDL::Renderer& render, const std::vector<SDL::Point>& edges)
 {
   render.setDrawColor(0);
   render.clear();
   
-  for (auto it = edges.begin(); it != edges.end(); ++it)
-  {
-    render.setDrawColor(rand()%UINT32_MAX);
-    render.drawLine(*it);
-  }
+  render.setDrawColor(UINT32_MAX);
+  render.drawLines(edges);
 
   render.present();
 }

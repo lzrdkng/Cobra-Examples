@@ -18,7 +18,7 @@ class Mandelbrot
 public:
 
   explicit Mandelbrot(SDL::Window& window,
-                      complex origin,
+                      const SDL::Coord& origin,
                       double zoom,
                       unsigned maxIteration);
 
@@ -47,8 +47,6 @@ protected:
 
   long double iterate(complex c) const;
 
-  complex screenToCartesian(unsigned x, unsigned y) const;
-
   Mandelbrot& renderPixel(unsigned x, unsigned y, long double color);
 
 
@@ -60,7 +58,7 @@ private:
 
   long double m_zoom;
  
-  complex m_center;
+  SDL::Coord m_center;
 
   double m_width;
 

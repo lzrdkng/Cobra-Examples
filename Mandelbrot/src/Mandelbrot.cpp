@@ -11,11 +11,12 @@
 
 const long double LOG2 = std::log(2);
 
-Mandelbrot::Mandelbrot(SDL::Window& window, complex origin, double zoom, unsigned maxIteration)
+Mandelbrot::Mandelbrot(SDL::Window& window, const SDL::Coord& origin,
+		       double zoom, unsigned maxIteration)
   : m_renderer(window, SDL::RendererAccelerated),
     m_format(nullptr),
     m_zoom(zoom),
-    m_center(origin),
+    m_center {origin},
     m_width(0),
     m_height(0),
     m_maxIteration (maxIteration)
@@ -101,15 +102,6 @@ Mandelbrot& Mandelbrot::moveTo(complex c)
   return *this;
 }
 
-complex Mandelbrot::screenToCartesian(unsigned x, unsigned y) const
-{
-  complex screenPosition(x - m_width/2 , m_height/2 - y);
-  screenPosition += m_zoom * m_center;
-  screenPosition *= this->getEpsilon();
-
-  return screenPosition;
-}
-
 Mandelbrot& Mandelbrot::renderPixel(unsigned x, unsigned y, long double color)
 { 
 
@@ -144,7 +136,8 @@ Mandelbrot& Mandelbrot::renderImage()
 					   {x, y},
 					   m_width,
 					   m_height,
-					   getEpsilon()
+					   getEpsilon(),
+					   m_center
 				       	   )));
 	}
     }

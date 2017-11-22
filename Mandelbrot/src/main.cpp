@@ -12,7 +12,7 @@ typedef std::complex<long double> complex;
 
 //const complex origin(0.3007597002215182, 0.0201501598261257);
 
-const complex origin(0, 0);
+const SDL::Coord origin(0, 0);
 
 int main()
 {

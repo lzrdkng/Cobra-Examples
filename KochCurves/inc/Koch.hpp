@@ -21,7 +21,7 @@ public:
 
   double getZoom() const;
   
-  std::vector<SDL::Pair<SDL::Point>> getEdges(int, int) const;
+  std::vector<SDL::Point> getEdges(int, int) const;
 
   Koch& increment();
 
