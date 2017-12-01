@@ -51,13 +51,13 @@ std::vector<SDL::Point> Koch::getEdges(int width, int height) const
       edges.push_back(
 	  SDL::cartesianToScreen(*it,
 				 width, height,
-				 m_offset,
-				 m_zoom));
+				 m_zoom,
+				 m_offset));
       edges.push_back(
 	    SDL::cartesianToScreen(*n_it,
 				   width, height,
-				   m_offset,
-				   m_zoom));
+				   m_zoom,
+				   m_offset));
 			
     }
 
