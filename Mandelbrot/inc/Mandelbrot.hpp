@@ -1,72 +1,90 @@
 #ifndef MANDELBROT_HPP
 #define MANDELBROT_HPP
 
-// std import
-#include <complex>
-// cobra imports
 #include <Cobra/SDL.hpp>
-#include <Cobra/Point.hpp>
-#include <Cobra/Window.hpp>
-#include <Cobra/Renderer.hpp>
-
-
-typedef std::complex<long double> complex;
 
 class Mandelbrot
 {
 
 public:
 
-  explicit Mandelbrot(SDL::Window& window,
-                      const SDL::Coord& origin,
-                      double zoom,
-                      unsigned maxIteration);
+  constexpr explicit Mandelbrot(const SDL::Coord& ORIGIN,
+				int WIDTH,
+				int HEIGHT,
+				double ZOOM,
+				unsigned MAX)
+    : origin {ORIGIN}, width {WIDTH}, height {HEIGHT}, zoom {ZOOM}, max {MAX} {}
+    
 
-  virtual ~Mandelbrot();
+  constexpr double getZoom() const { return zoom; }
 
+  constexpr const SDL::Coord& getOrigin() const { return origin; }
 
-  long double getZoom() const;
+  constexpr double getWidth() const { return width; }
 
-  long double getEpsilon() const;
-
-  complex getCenter() const;
-
-  double getWidth() const;
-
-  double getHeight() const;
-
-  Mandelbrot& renderImage();
+  constexpr double getHeight() const { return height; }
   
-  Mandelbrot& zoomIn(long double factor);
+  Mandelbrot& zoomIn()
+  {
+    zoom *= 2;
+    return *this;
+  }
 
-  Mandelbrot& moveFrom(complex c);
+  Mandelbrot& zoomOut()
+  {
+    zoom /= 2;
+    return *this;
+  }
 
-  Mandelbrot& moveTo(complex c);
+  Mandelbrot& moveFrom(const SDL::Coord& coord)
+  {
+    origin += coord;
+    return *this;
+  }
 
-protected:
+  Mandelbrot& moveTo(const SDL::Coord& coord)
+  {
+    origin = coord;
+    return *this;
+  }
 
-  long double iterate(complex c) const;
 
-  Mandelbrot& renderPixel(unsigned x, unsigned y, long double color);
+  uint iterate(const SDL::Point& coord) const
+  {
+    SDL::Coord z = SDL::screenToCartesian(coord,
+					  width,
+					  height,
+					  zoom,
+					  origin);
+    SDL::Coord c {z};
 
+    uint i = 0;
+    
+    while (std::abs(z) < 2 && i < max)
+    {
+      z = z*z + c;
+      ++i;
+    }
+    
+    if (std::abs(z) > 2)
+      return 0;
+
+    return i;
+  }
 
 private:
 
-  SDL::Renderer m_renderer;
+  double zoom;
 
-  SDL_PixelFormat* m_format;
+  SDL::Coord origin;
 
-  long double m_zoom;
- 
-  SDL::Coord m_center;
+  int width;
 
-  double m_width;
+  int height;
 
-  double m_height;
+  uint max;
 
-  unsigned m_maxIteration;
-
-};
+};  
 
 
 #endif // MANDELBROT_HPP

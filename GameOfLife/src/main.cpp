@@ -16,7 +16,9 @@ int main(int argc, char** argv)
 {
   double p = 0.2;
   int width  = 512;
-  int height = 512;    
+  int height = 512;
+
+  SDL::init(SDL::InitVideo);
   
   SDL::Window window("Conway Game of Life");
   window.setResizable(true);
@@ -76,6 +78,8 @@ int main(int argc, char** argv)
     
   } while(true);
 
+  SDL::quit();
+  
   return 0;
 }
 

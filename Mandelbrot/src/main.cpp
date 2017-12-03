@@ -1,77 +1,61 @@
-// std imports
-#include <complex>
-#include <iostream>
-#include <iomanip>
-// cobra imports
 #include <Cobra/SDL.hpp>
 #include <Cobra/Window.hpp>
-// app import
+#include <Cobra/Renderer.hpp>
+#include <Cobra/Point.hpp>
+
 #include "Mandelbrot.hpp"
-
-typedef std::complex<long double> complex;
-
-//const complex origin(0.3007597002215182, 0.0201501598261257);
-
-const SDL::Coord origin(0, 0);
 
 int main()
 {
+  const  SDL::Coord origin {0.3007597002215182, 0.0201501598261257};
+  
   SDL::init(SDL::InitVideo);
 
-  SDL::Window root("Mandelbrot");
+  SDL::Window window("Mandelbrot");
 
-  Mandelbrot mandelbrot(root, origin, 2, 100);
+  SDL::Renderer render(window, SDL::RendererAccelerated);
 
-  mandelbrot.renderImage();
+  SDL::Pair<int> size = window.getSize();
+
+  Mandelbrot mandelbrot(origin, size.first, size.second, 1, 100);
 
   SDL_Event event;
 
-  std::cout << std::setprecision(17);
+  bool quit = false;
 
   do
-    {
-      SDL_PollEvent(&event);
-
+  {
+      
+    while (SDL_PollEvent(&event) != 0)
       if (event.type == SDL_QUIT)
-        {
-	  break;
-        }
-      else if (event.type == SDL_KEYDOWN)
-        {
-	  switch (event.key.keysym.sym)
-            {
-            case SDLK_DOWN:
-	      break;
-            case SDLK_UP:
-	      break;
-            case SDLK_LEFT:
-	      break;
-            case SDLK_RIGHT:
-	      break;
-            case SDLK_SPACE:
-	      mandelbrot.zoomIn(2);
-	      break;
-            case SDLK_LSHIFT:
-	      mandelbrot.zoomIn(0.5);
-	      break;
-            default:
-	      break;
-            }
+	quit = true;
 
-	  std::cout << "Center: "
-		    << mandelbrot.getCenter()
-		    << "\nZoom: "
-		    << mandelbrot.getZoom()
-		    << "\nEpsilon: "
-		    << mandelbrot.getEpsilon()
-		    << "\n----------------------"
-		    << std::endl;
+    if (!quit)
+    {
+      render.setDrawColor(0);
+      render.clear();
+	  
+      for (int x=0; x<size.first; ++x)
+      {
+	for (int y=0; y<size.second; ++y)
+	{
+	  uint color = mandelbrot.iterate({x, y});
+	      
+	  render.setDrawColor({color, color, color});
+	  render.drawPoint(x, y);
+	}
+      }
 
-	  mandelbrot.renderImage();
+      render.present();
 
-	  SDL_FlushEvent(SDL_KEYDOWN);
-        }
-    } while(true);
+      mandelbrot.zoomIn();
+
+      if (zoom >= 32768)
+	quit = false;
+      
+    }
+	
+  } while(!quit);
 
   SDL::quit();
 
