@@ -4,12 +4,15 @@
 #include <vector>
 
 #include <Cobra/SDL.hpp>
-#include <Cobra/Window.hpp>
-#include <Cobra/Renderer.hpp>
-#include <Cobra/Rect.hpp>
 
 #include "Conway.hpp"
 
+/**
+ * @brief Procedure that draw all the cells from the conway game to the renderer
+ * @param render The renderer instance
+ * @param game The Conway game instance
+ * @param size The window current size
+ */ 
 void draw(SDL::Renderer& render, const Conway& game, const SDL::Pair<int>& size);
 
 int main(int argc, char** argv)
@@ -17,7 +20,7 @@ int main(int argc, char** argv)
   double p = 0.2;
   int width  = 512;
   int height = 512;
-
+  
   SDL::init(SDL::InitVideo);
   
   SDL::Window window("Conway Game of Life");
@@ -37,7 +40,7 @@ int main(int argc, char** argv)
   
   do
   {
-  begin:    SDL_PollEvent(&event);
+    SDL_PollEvent(&event);
 
     if (event.type == SDL_QUIT)
       break;
@@ -84,29 +87,35 @@ int main(int argc, char** argv)
 }
 
 
+
 void draw(SDL::Renderer& render, const Conway& game, const SDL::Pair<int>& size)
 {
-
   const std::vector<std::vector<int>>& cells = game.getCells();
 
-  uint width  = static_cast<uint>(std::ceil(size.first / static_cast<double>(cells[0].size())));
-  uint height = static_cast<uint>(std::ceil(size.second / static_cast<double>(cells.size())));
+  std::vector<SDL::Rect> rects;
 
+  Uint16 width  = static_cast<Uint16>(std::ceil(
+					size.first /
+					static_cast<double>(cells[0].size())
+					));
+  
+  Uint16 height = static_cast<Uint16>(std::ceil(
+					size.second /
+					static_cast<double>(cells.size())
+					));  
+  for (uint i=0; i<cells.size(); ++i)
+    for (uint j=0; j<cells[0].size(); ++j)
+      if (cells[i][j])
+	rects.push_back({static_cast<Sint16>(width  * j),
+			 static_cast<Sint16>(height * i),
+			 width,
+			 height});
 
-  render.setDrawColor({});
+  render.setDrawColor(0);
   render.clear();
 
-  render.setDrawColor(UINT32_MAX);  
+  render.setDrawColor(UINT32_MAX);
+  render.drawRects(rects);
   
-  for (uint i=0; i<cells.size(); ++i)
-  {    
-    for (uint j=0; j<cells[0].size(); ++j)
-    {
-      
-      if (cells[i][j])
-	render.fillRect({j*width, i*height, width, height});
-    }
-  }  
-
   render.present();
 }

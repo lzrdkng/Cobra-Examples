@@ -17,7 +17,7 @@ int main()
 
   SDL::Pair<int> size = window.getSize();
 
-  Mandelbrot mandelbrot(origin, size.first, size.second, 1, 100);
+  Mandelbrot mandelbrot(origin, size.first, size.second, 1, 500);
 
   SDL_Event event;
 
@@ -41,7 +41,7 @@ int main()
 	{
 	  uint color = mandelbrot.iterate({x, y});
 	      
-	  render.setDrawColor({color, color, color});
+	  render.setDrawColor({128, 256, 64, color&255});
 	  render.drawPoint(x, y);
 	}
       }
@@ -50,7 +50,7 @@ int main()
 
       mandelbrot.zoomIn();
 
-      if (zoom >= 32768)
+      if (mandelbrot.getZoom() >= 32768)
 	quit = false;
       
     }

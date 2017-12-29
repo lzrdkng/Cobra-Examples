@@ -16,7 +16,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -g -std=gnu++14 -O3
+CFLAGS      := -fopenmp -Wall -g -std=gnu++14 -O0
 LIB         := -L${LIBDIR} -lCobra -lSDL2
 INC         := -I$(INCDIR) -Iinc
 INCDEP      := -I$(INCDIR) -Iinc

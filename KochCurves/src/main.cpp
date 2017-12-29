@@ -28,6 +28,8 @@ int main(int argc, char** argv)
 
   SDL::Renderer render(window, SDL::RendererAccelerated);
 
+
+
   SDL::Pair<int> size = window.getSize();
 
   render.setDrawColor(SDL::Color {0, 0, 0});
