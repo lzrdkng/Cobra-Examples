@@ -15,8 +15,8 @@ void draw(SDL::Renderer& render, const Conway& game, const SDL::Pair<int>& size)
 int main(int argc, char** argv)
 {
   double p = 0.2;
-  int width  = 512;
-  int height = 512;
+  int width  = 256;
+  int height = 256;
 
   SDL::init(SDL::InitVideo);
   
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   
   do
   {
-  begin:    SDL_PollEvent(&event);
+    SDL_PollEvent(&event);
 
     if (event.type == SDL_QUIT)
       break;

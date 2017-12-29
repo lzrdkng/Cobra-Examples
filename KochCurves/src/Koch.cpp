@@ -1,5 +1,4 @@
 #include "Koch.hpp"
-#include <iostream>
 #include <cmath>
 
 const double PI = 3.14159265358979323846;
@@ -105,8 +104,6 @@ Koch& Koch::increment()
   int i =0;
 
   for (auto it=m_vertex.begin(); it!=m_vertex.end(); ++it) ++i;
-
-  std::cout << "Vertices: " << i <<std::endl;
 
   return *this;
 }

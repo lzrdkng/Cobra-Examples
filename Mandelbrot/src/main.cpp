@@ -50,7 +50,7 @@ int main()
 
       mandelbrot.zoomIn();
 
-      if (zoom >= 32768)
+      if (mandelbrot.getZoom() >= 32768)
 	quit = false;
       
     }
