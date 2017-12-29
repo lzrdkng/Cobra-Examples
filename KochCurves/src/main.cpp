@@ -56,8 +56,6 @@ int main(int argc, char** argv)
     else if(event.type == SDL_KEYDOWN)
     {
 
-      std::cout << "Zoom: " << koch.getZoom() << "\n"
-		<< "Offset: " << koch.getOffset() << std::endl;
       
       switch (event.key.keysym.sym)
       {
@@ -126,7 +124,21 @@ void draw(SDL::Renderer& render, const std::vector<SDL::Point>& edges)
   render.clear();
   
   render.setDrawColor(UINT32_MAX);
-  render.drawLines(edges);
+
+  for (uint i=0; i<edges.size(); i += 131071)
+  {
+    uint delta = i + 131071;
+
+    if (delta > edges.size())
+    {
+      render.drawLines(std::vector<SDL::Point> {edges.begin() + i, edges.end()});
+    }
+    else
+    {
+      render.drawLines(std::vector<SDL::Point> {edges.begin() + i, edges.begin() + delta});
+    }
+      
+  }
 
   render.present();
 }
