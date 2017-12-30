@@ -1,14 +1,14 @@
 #ifndef MANDELBROT_HPP
 #define MANDELBROT_HPP
 
-#include <Cobra/SDL.hpp>
+#include <SDLO/SDL.hpp>
 
 class Mandelbrot
 {
 
 public:
 
-  constexpr explicit Mandelbrot(const SDL::Coord& ORIGIN,
+  constexpr explicit Mandelbrot(const SDLO::Coord& ORIGIN,
 				int WIDTH,
 				int HEIGHT,
 				double ZOOM,
@@ -18,7 +18,7 @@ public:
 
   constexpr double getZoom() const { return zoom; }
 
-  constexpr const SDL::Coord& getOrigin() const { return origin; }
+  constexpr const SDLO::Coord& getOrigin() const { return origin; }
 
   constexpr double getWidth() const { return width; }
 
@@ -36,27 +36,27 @@ public:
     return *this;
   }
 
-  Mandelbrot& moveFrom(const SDL::Coord& coord)
+  Mandelbrot& moveFrom(const SDLO::Coord& coord)
   {
     origin += coord;
     return *this;
   }
 
-  Mandelbrot& moveTo(const SDL::Coord& coord)
+  Mandelbrot& moveTo(const SDLO::Coord& coord)
   {
     origin = coord;
     return *this;
   }
 
 
-  uint iterate(const SDL::Point& coord) const
+  uint iterate(const SDLO::Point& coord) const
   {
-    SDL::Coord z = SDL::screenToCartesian(coord,
+    SDLO::Coord z = SDLO::screenToCartesian(coord,
 					  width,
 					  height,
 					  zoom,
 					  origin);
-    SDL::Coord c {z};
+    SDLO::Coord c {z};
 
     uint i = 0;
     
@@ -76,7 +76,7 @@ private:
 
   double zoom;
 
-  SDL::Coord origin;
+  SDLO::Coord origin;
 
   int width;
 

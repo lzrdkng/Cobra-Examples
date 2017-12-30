@@ -1,0 +1,18 @@
+* SDLO Examples
+  Some examples of *SDLO*
+
+** Mandelbrot
+   A light Mandelbrot set explorer. *BROKEN*
+
+** Maze
+   A random maze generator. Presse *SPACE* to generate a new maze.
+
+** KochCurves
+   A KochCurves generator. Press *,* to decrement, *.* to
+   increment, *z* to zoom, *u* to unzoom. Arrow to move around.
+   Pass in *CLI* argument the number of initial points (2 by default)
+
+   NOTE : Program crash might crash if too much iteration are made.
+
+** GameOfLife
+   Conway game of life. Press space to toggle simulation.

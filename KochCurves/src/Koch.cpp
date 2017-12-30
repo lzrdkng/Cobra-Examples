@@ -20,7 +20,7 @@ Koch::Koch(int n, int step) : m_vertex()
 Koch::~Koch() { }
 
 
-const SDL::Coord& Koch::getOffset() const
+const SDLO::Coord& Koch::getOffset() const
 {
   return m_offset;
 }
@@ -30,9 +30,9 @@ double Koch::getZoom() const
   return m_zoom;
 }
 
-std::vector<SDL::Point> Koch::getEdges(int width, int height) const
+std::vector<SDLO::Point> Koch::getEdges(int width, int height) const
 {
-  std::vector<SDL::Point> edges;
+  std::vector<SDLO::Point> edges;
 
   uint delta = static_cast<int>(std::round(std::pow(4, m_max - m_current)));
   
@@ -48,12 +48,12 @@ std::vector<SDL::Point> Koch::getEdges(int width, int height) const
     if (n_it != m_vertex.end())
     {
       edges.push_back(
-	  SDL::cartesianToScreen(*it,
+	  SDLO::cartesianToScreen(*it,
 				 width, height,
 				 m_zoom,
 				 m_offset));
       edges.push_back(
-	    SDL::cartesianToScreen(*n_it,
+	    SDLO::cartesianToScreen(*n_it,
 				   width, height,
 				   m_zoom,
 				   m_offset));
@@ -129,6 +129,6 @@ Koch& Koch::zoomOut()
 
 Koch& Koch::move(int x, int y)
 {
-  m_offset += SDL::Coord {static_cast<double>(x), static_cast<double>(y)};
+  m_offset += SDLO::Coord {static_cast<double>(x), static_cast<double>(y)};
   return *this;
 }

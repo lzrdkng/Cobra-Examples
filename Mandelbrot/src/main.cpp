@@ -1,21 +1,21 @@
-#include <Cobra/SDL.hpp>
-#include <Cobra/Window.hpp>
-#include <Cobra/Renderer.hpp>
-#include <Cobra/Point.hpp>
+#include <SDLO/SDL.hpp>
+#include <SDLO/Window.hpp>
+#include <SDLO/Renderer.hpp>
+#include <SDLO/Point.hpp>
 
 #include "Mandelbrot.hpp"
 
 int main()
 {
-  const  SDL::Coord origin {0.3007597002215182, 0.0201501598261257};
+  const  SDLO::Coord origin {0.3007597002215182, 0.0201501598261257};
   
-  SDL::init(SDL::InitVideo);
+  SDLO::init(SDLO::InitVideo);
 
-  SDL::Window window("Mandelbrot");
+  SDLO::Window window("Mandelbrot");
 
-  SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererAccelerated);
 
-  SDL::Pair<int> size = window.getSize();
+  SDLO::Pair<int> size = window.getSize();
 
   Mandelbrot mandelbrot(origin, size.first, size.second, 1, 500);
 
@@ -41,7 +41,7 @@ int main()
 	{
 	  uint color = mandelbrot.iterate({x, y});
 	      
-	  render.setDrawColor({128, 256, 64, color&255});
+	  render.setDrawColor({128, 256, 64, color%256});
 	  render.drawPoint(x, y);
 	}
       }
@@ -57,7 +57,7 @@ int main()
 	
   } while(!quit);
 
-  SDL::quit();
+  SDLO::quit();
 
   return 0;
 }

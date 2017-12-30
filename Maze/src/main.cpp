@@ -1,19 +1,19 @@
 #include "MazeApplication.hpp"
 
-#include <Cobra/Window.hpp>
-#include <Cobra/Renderer.hpp>
+#include <SDLO/Window.hpp>
+#include <SDLO/Renderer.hpp>
 
 using namespace std;
 
 int main()
 {
 
-  MazeApplication app(SDL::InitVideo);
+  MazeApplication app(SDLO::InitVideo);
 
-  SDL::Window window("Maze", 640, 480,
-		     SDL::WindowResizable|SDL::WindowShown);
+  SDLO::Window window("Maze", 640, 480,
+		     SDLO::WindowResizable|SDLO::WindowShown);
 
-  SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererAccelerated);
 
 
   app.run(window, render);

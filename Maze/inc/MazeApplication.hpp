@@ -1,9 +1,9 @@
 #ifndef MAZEAPPLICATION_HPP
 #define MAZEAPPLICATION_HPP
 
-#include <Cobra/SDL.hpp>
-#include <Cobra/Window.hpp>
-#include <Cobra/Renderer.hpp>
+#include <SDLO/SDL.hpp>
+#include <SDLO/Window.hpp>
+#include <SDLO/Renderer.hpp>
 
 #include "Maze.hpp"
 
@@ -11,19 +11,19 @@ class MazeApplication
 {
 public:
 
-    explicit MazeApplication(SDL::InitFlags flags);
+    explicit MazeApplication(SDLO::InitFlags flags);
 
     virtual ~MazeApplication();
 
-    void run(SDL::Window& window, SDL::Renderer& render);
+    void run(SDLO::Window& window, SDLO::Renderer& render);
 
 protected:
 
     void generateMaze();
 
-    void drawMaze(SDL::Renderer& renderer);
+    void drawMaze(SDLO::Renderer& renderer);
 
-    void windowResized(const SDL::Window& window);
+    void windowResized(const SDLO::Window& window);
 
 private:
 

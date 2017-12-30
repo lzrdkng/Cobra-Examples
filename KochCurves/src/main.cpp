@@ -3,13 +3,13 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include <Cobra/Window.hpp>
-#include <Cobra/Renderer.hpp>
+#include <SDLO/Window.hpp>
+#include <SDLO/Renderer.hpp>
 
 #include "Koch.hpp"
 
 
-void draw(SDL::Renderer& render, const std::vector<SDL::Point>& edges);
+void draw(SDLO::Renderer& render, const std::vector<SDLO::Point>& edges);
 
 
 int main(int argc, char** argv)
@@ -21,21 +21,21 @@ int main(int argc, char** argv)
 	
   Koch koch(side, 200);
 
-  SDL::init(SDL::InitVideo);
+  SDLO::init(SDLO::InitVideo);
 
-  SDL::Window window("Koch");
+  SDLO::Window window("Koch");
   window.setResizable(true);
 
-  SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererAccelerated);
 
 
 
-  SDL::Pair<int> size = window.getSize();
+  SDLO::Pair<int> size = window.getSize();
 
-  render.setDrawColor(SDL::Color {0, 0, 0});
+  render.setDrawColor(SDLO::Color {0, 0, 0});
   render.clear();
 
-  render.setDrawColor(SDL::Color {0xFF, 0xFF, 0xFF});
+  render.setDrawColor(SDLO::Color {0xFF, 0xFF, 0xFF});
 
   render.drawLines(koch.getEdges(size.first, size.second));
 
@@ -112,13 +112,13 @@ int main(int argc, char** argv)
  
   } while(true);
 
-  SDL::quit();
+  SDLO::quit();
 
   return 0;
 }
 
 
-void draw(SDL::Renderer& render, const std::vector<SDL::Point>& edges)
+void draw(SDLO::Renderer& render, const std::vector<SDLO::Point>& edges)
 {
   render.setDrawColor(0);
   render.clear();
@@ -131,11 +131,11 @@ void draw(SDL::Renderer& render, const std::vector<SDL::Point>& edges)
 
     if (delta > edges.size())
     {
-      render.drawLines(std::vector<SDL::Point> {edges.begin() + i, edges.end()});
+      render.drawLines(std::vector<SDLO::Point> {edges.begin() + i, edges.end()});
     }
     else
     {
-      render.drawLines(std::vector<SDL::Point> {edges.begin() + i, edges.begin() + delta});
+      render.drawLines(std::vector<SDLO::Point> {edges.begin() + i, edges.begin() + delta});
     }
       
   }

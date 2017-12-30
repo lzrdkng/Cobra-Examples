@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <Cobra/SDL.hpp>
+#include <SDLO/SDL.hpp>
 
 #include "Conway.hpp"
 
@@ -13,7 +13,7 @@
  * @param game The Conway game instance
  * @param size The window current size
  */ 
-void draw(SDL::Renderer& render, const Conway& game, const SDL::Pair<int>& size);
+void draw(SDLO::Renderer& render, const Conway& game, const SDLO::Pair<int>& size);
 
 int main(int argc, char** argv)
 {
@@ -22,14 +22,14 @@ int main(int argc, char** argv)
   int width  = 512;
   int height = 512;
 
-  SDL::init(SDL::InitVideo);
+  SDLO::init(SDLO::InitVideo);
   
-  SDL::Window window("Conway Game of Life");
+  SDLO::Window window("Conway Game of Life");
   window.setResizable(true);
 
-  SDL::Pair<int> size = window.getSize();
+  SDLO::Pair<int> size = window.getSize();
 
-  SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererAccelerated);
 
   Conway game(p, height, width);
 
@@ -82,18 +82,18 @@ int main(int argc, char** argv)
     
   } while(true);
 
-  SDL::quit();
+  SDLO::quit();
   
   return 0;
 }
 
 
 
-void draw(SDL::Renderer& render, const Conway& game, const SDL::Pair<int>& size)
+void draw(SDLO::Renderer& render, const Conway& game, const SDLO::Pair<int>& size)
 {
   const std::vector<std::vector<int>>& cells = game.getCells();
 
-  std::vector<SDL::Rect> rects;
+  std::vector<SDLO::Rect> rects;
 
   Uint16 width  = static_cast<Uint16>(std::ceil(
 					size.first /
