@@ -5,8 +5,8 @@
 #include <vector>
 #include <complex>
 
-#include <SDLO/SDL.hpp>
-#include <SDLO/Point.hpp>
+#include <SO/SDL.hpp>
+#include <SO/Point.hpp>
 
 
 class Koch
@@ -17,11 +17,11 @@ public:
 
   ~Koch();
 
-  const SDLO::Coord& getOffset() const;
+  const SO::Coord& getOffset() const;
 
   double getZoom() const;
   
-  std::vector<SDLO::Point> getEdges(int, int) const;
+  std::vector<SO::Point> getEdges(int, int) const;
 
   Koch& increment();
 
@@ -43,7 +43,7 @@ private:
 
   double m_zoom {1};
   
-  SDLO::Coord m_offset {0, 0};
+  SO::Coord m_offset {0, 0};
 
 };
 

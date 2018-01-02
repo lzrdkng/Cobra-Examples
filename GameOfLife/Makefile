@@ -17,7 +17,7 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -fopenmp -Wall -std=gnu++17 -O3
-LIB         := -L${LIBDIR} -lSDL2 -lSDLO
+LIB         := -L${LIBDIR} -lSDL2 -lSO
 INC         := -I$(INCDIR) -Iinc
 INCDEP      := -I$(INCDIR) -Iinc
 

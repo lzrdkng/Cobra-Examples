@@ -1,22 +1,21 @@
 #include "MazeApplication.hpp"
 
-#include <SDLO/Window.hpp>
-#include <SDLO/Renderer.hpp>
+#include <SO/Window.hpp>
+#include <SO/Renderer.hpp>
 
 using namespace std;
 
 int main()
 {
+  MazeApplication app(SO::Init::Video);
 
-  MazeApplication app(SDLO::InitVideo);
+  SO::Window window("Maze", SO::Wind::Resizable | SO::Wind::Shown);
 
-  SDLO::Window window("Maze", 640, 480,
-		     SDLO::WindowResizable|SDLO::WindowShown);
-
-  SDLO::Renderer render(window, SDLO::RendererAccelerated);
-
+  SO::Renderer render(window, SO::Render::Accelerated);
 
   app.run(window, render);
+
+  return 0;
 }
 
 

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <SDLO/SDL.hpp>
+#include <SO/SDL.hpp>
 
 #include "Conway.hpp"
 
@@ -13,7 +13,7 @@
  * @param game The Conway game instance
  * @param size The window current size
  */ 
-void draw(SDLO::Renderer& render, const Conway& game, const SDLO::Pair<int>& size);
+void draw(SO::Renderer& render, const Conway& game, const SO::Pair<int>& size);
 
 int main(int argc, char** argv)
 {
@@ -22,18 +22,16 @@ int main(int argc, char** argv)
   int width  = 512;
   int height = 512;
 
-  SDLO::init(SDLO::InitVideo);
+  SO::init(SO::Init::Video);
   
-  SDLO::Window window("Conway Game of Life");
-  window.setResizable(true);
+  SO::Window window("Conway Game of Life", SO::Wind::Resizable);
+  window.setMinimumSize(width, height);
+  
+  SO::Pair<int> size = window.getSize();
 
-  SDLO::Pair<int> size = window.getSize();
-
-  SDLO::Renderer render(window, SDLO::RendererAccelerated);
+  SO::Renderer render(window, SO::Render::Accelerated);
 
   Conway game(p, height, width);
-
-  window.setMinimumSize(width, height);
 
   SDL_Event event;
 
@@ -82,18 +80,18 @@ int main(int argc, char** argv)
     
   } while(true);
 
-  SDLO::quit();
+  SO::quit();
   
   return 0;
 }
 
 
 
-void draw(SDLO::Renderer& render, const Conway& game, const SDLO::Pair<int>& size)
+void draw(SO::Renderer& render, const Conway& game, const SO::Pair<int>& size)
 {
   const std::vector<std::vector<int>>& cells = game.getCells();
 
-  std::vector<SDLO::Rect> rects;
+  std::vector<SO::Rect> rects;
 
   Uint16 width  = static_cast<Uint16>(std::ceil(
 					size.first /

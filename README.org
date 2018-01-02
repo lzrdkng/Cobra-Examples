@@ -1,5 +1,5 @@
-* SDLO Examples
-  Some examples of *SDLO*
+* SO Examples
+  Some examples of *SO*
 
 ** Mandelbrot
    A light Mandelbrot set explorer. *BROKEN*

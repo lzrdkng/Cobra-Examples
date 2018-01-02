@@ -1,14 +1,14 @@
 #include <iostream>
 #include "MazeApplication.hpp"
 
-MazeApplication::MazeApplication(SDLO::InitFlags flags) : maze()
+MazeApplication::MazeApplication(SO::Init flags) : maze()
 {
-  SDLO::init(flags);
+  SO::init(flags);
 }
 
 MazeApplication::~MazeApplication()
 {
-  SDLO::quit();
+  SO::quit();
 }
 
 
@@ -20,7 +20,7 @@ void MazeApplication::generateMaze()
   maze.setValues(nx, ny).generateMaze();
 }
 
-void MazeApplication::drawMaze(SDLO::Renderer& render)
+void MazeApplication::drawMaze(SO::Renderer& render)
 {
   render.setDrawColor({255, 255, 255});
   render.clear();
@@ -56,7 +56,7 @@ void MazeApplication::drawMaze(SDLO::Renderer& render)
   render.present();
 }
 
-void MazeApplication::windowResized(const SDLO::Window& window)
+void MazeApplication::windowResized(const SO::Window& window)
 {
   const float P = 0.1F; // Pourcentage of padding
 
@@ -70,7 +70,7 @@ void MazeApplication::windowResized(const SDLO::Window& window)
 }
 
 
-void MazeApplication::run(SDLO::Window& window, SDLO::Renderer& render)
+void MazeApplication::run(SO::Window& window, SO::Renderer& render)
 {
   SDL_Event event;
 
