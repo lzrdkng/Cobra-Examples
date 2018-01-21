@@ -23,9 +23,9 @@ int main(int argc, char** argv)
 
   SO::init(SO::Init::Video);
 
-  SO::Window window("Koch", SO::Wind::Resizable);
+  SO::Window window("Koch", SO::Window::Resizable);
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
 
 
 

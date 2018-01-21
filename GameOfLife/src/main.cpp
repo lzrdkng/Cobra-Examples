@@ -24,12 +24,12 @@ int main(int argc, char** argv)
 
   SO::init(SO::Init::Video);
   
-  SO::Window window("Conway Game of Life", SO::Wind::Resizable);
+  SO::Window window("Conway Game of Life", SO::Window::Resizable);
   window.setMinimumSize(width, height);
   
   SO::Pair<int> size = window.getSize();
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
 
   Conway game(p, height, width);
 
